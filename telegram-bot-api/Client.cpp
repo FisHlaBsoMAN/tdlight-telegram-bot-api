@@ -6304,7 +6304,8 @@ class Client::JsonMessagesArray : public td::Jsonable {
     auto array = scope->enter_array();
     for (auto &message : messages_) {
       auto full_message_id = client_->add_message(std::move(message));
-      const MessageInfo *m = client_->get_message(full_message_id.chat_id, full_message_id.message_id, true);
+      //const MessageInfo *m = client_->get_message(full_message_id->chat_id, full_message_id->message_id, true);
+      const MessageInfo *m = client_->get_message(full_message_id->chat_id, full_message_id->id, true);
       array << JsonMessage(m, true, "search", client_);
     }
   }
@@ -16785,7 +16786,7 @@ td::Status Client::process_add_proxy_query(PromisedQueryPtr &query) {
 
   td_api::object_ptr<td_api::proxy> proxy = make_object<td_api::proxy>(server.str(), port, std::move(type));
 
-  send_request(make_object<td_api::addProxy>(std::move(proxy), false),
+  send_request(make_object<td_api::addProxy>(std::move(proxy), false, ""),
                td::make_unique<TdOnAddProxyQueryCallback>(std::move(query)));
   return td::Status::OK();
 }
