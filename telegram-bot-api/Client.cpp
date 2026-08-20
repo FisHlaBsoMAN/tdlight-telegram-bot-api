@@ -17985,7 +17985,7 @@ td::Status Client::process_search_public_chats_query(PromisedQueryPtr &query) {
   CHECK_IS_USER();
   auto query_ = query->arg("query");
 
-  send_request(make_object<td_api::searchPublicChats>(query_.str()),
+  send_request(make_object<td_api::searchPublicChats>(query_.str(), nullptr),
                td::make_unique<TdOnGetChatsCallback>(this, std::move(query)));
   return td::Status::OK();
 }
